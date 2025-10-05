@@ -6,4 +6,6 @@
 
 
 
-Menu inspired by TomGrobbe/vMenu 
+
+## Credits
+Idea - https://github.com/TomGrobbe/vMenu
