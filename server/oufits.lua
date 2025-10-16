@@ -51,7 +51,6 @@ RegisterNetEvent("lvl:core:deleteOutfit", function(outfitName)
     )
 end)
 
-
 RegisterNetEvent("vMenu:sendMessage")
 AddEventHandler("vMenu:sendMessage", function(targetId, message)
     local src = source
