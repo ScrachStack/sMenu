@@ -80,58 +80,56 @@ end)
 RegisterNetEvent("vMenu:kickPlayer")
 AddEventHandler("vMenu:kickPlayer", function(targetId, reason)
     local src = source
-    local adminName = GetPlayerName(src)
-    
-    if GetPlayerPing(targetId) > 0 then -- Check if player exists
-        local targetName = GetPlayerName(targetId)
-        DropPlayer(targetId, "Kicked by " .. adminName .. " - Reason: " .. reason)
-        
-        TriggerClientEvent('chat:addMessage', -1, {
-            color = {255, 165, 0},
-            multiline = true,
-            args = {"[Admin]", targetName .. " was kicked by " .. adminName .. " - Reason: " .. reason}
-        })
-    else
+    local adminName = GetPlayerName(src) or "Console"
+    if src ~= 0 and not IsPlayerAceAllowed(src, "vmenu.ban") then
         TriggerClientEvent('chat:addMessage', src, {
             color = {255, 0, 0},
             multiline = true,
-            args = {"[Error]", "Player not found"}
+            args = {"[Error]", "You do not have permission to use this command."}
         })
+        return
+    end
+    if GetPlayerPing(targetId) > 0 then
+        local targetName = GetPlayerName(targetId)
+        DropPlayer(targetId, "Kicked by " .. adminName .. " - Reason: " .. reason)
+    else
     end
 end)
+
 
 RegisterNetEvent("vMenu:banPlayer")
 AddEventHandler("vMenu:banPlayer", function(targetId, reason)
     local src = source
-    local adminName = GetPlayerName(src)
-    
-    if GetPlayerPing(targetId) > 0 then -- Check if player exists
-        local targetName = GetPlayerName(targetId)
-        local identifier = GetPlayerIdentifier(targetId, 0)
-        
-        -- You would typically save this to a database
-        -- For now, just kick the player
-        DropPlayer(targetId, "Banned by " .. adminName .. " - Reason: " .. reason)
-        
-        TriggerClientEvent('chat:addMessage', -1, {
-            color = {255, 0, 0},
-            multiline = true,
-            args = {"[Admin]", targetName .. " was banned by " .. adminName .. " - Reason: " .. reason}
-        })
-    else
+    local adminName = GetPlayerName(src) or "Console"
+    if src ~= 0 and not IsPlayerAceAllowed(src, "vmenu.ban") then
         TriggerClientEvent('chat:addMessage', src, {
             color = {255, 0, 0},
             multiline = true,
-            args = {"[Error]", "Player not found"}
+            args = {"[Error]", "You do not have permission to use this command."}
         })
+        return
+    end
+
+    if GetPlayerPing(targetId) > 0 then
+        local targetName = GetPlayerName(targetId)
+        local identifier = GetPlayerIdentifier(targetId, 0)
+
+        DropPlayer(targetId, "Banned by " .. adminName .. " - Reason: " .. reason)
+
+
+
+        print(("[sMenu] %s banned %s (%s) - Reason: %s"):format(adminName, targetName, identifier or "unknown", reason or "none"))
+    else
+    
     end
 end)
+
 
 RegisterNetEvent("vMenu:teleportToPlayer")
 AddEventHandler("vMenu:teleportToPlayer", function(targetId)
     local src = source
     
-    if GetPlayerPing(targetId) > 0 then -- Check if player exists
+    if GetPlayerPing(targetId) > 0 then 
         local targetPed = GetPlayerPed(targetId)
         local targetCoords = GetEntityCoords(targetPed)
         
